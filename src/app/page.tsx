@@ -1,65 +1,100 @@
-import Image from "next/image";
+import { ArrowRight, MessageCircle, Sparkles, TrendingUp, Users, CheckCircle } from "lucide-react";
+import Header from "@/components/Header";
+import HomeHero from "@/components/home/HomeHero";
+import BentoGrid from "@/components/BentoGrid";
+import MagneticButton from "@/components/MagneticButton";
+import PartnersSection from "@/components/PartnersSection";
+import LearningJourney from "@/components/LearningJourney";
+import EcosystemOrbit from "@/components/EcosystemOrbit";
+import MentorCarousel from "@/components/MentorCarousel";
+import XRayTransform from "@/components/XRayTransform";
+import PlacementJourney from "@/components/PlacementJourney";
+import FAQAccordion from "@/components/FAQAccordion";
+import RegistrationForm from "@/components/RegistrationForm";
+import Footer from "@/components/Footer";
+
+// Layout metrics cards details
+const METRICS = [
+  { value: "4.9★", label: "Mentor Rating", icon: Sparkles },
+  { value: "10,000+", label: "Engineers Trained", icon: Users },
+  { value: "100%", label: "Hands-on Internships", icon: CheckCircle },
+  { value: "3x", label: "Career Acceleration", icon: TrendingUp },
+];
 
 export default function Home() {
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="relative min-h-screen bg-white">
+      {/* Header Navigation */}
+      <Header />
+
+      {/* 1. New Redesigned Homepage Hero */}
+      <HomeHero />
+
+      {/* 2. Program & Ecosystem Partners */}
+      <PartnersSection />
+
+      {/* 2.5. Student Learning Journey */}
+      <LearningJourney />
+
+      {/* 2.6. The AI School Ecosystem */}
+      <EcosystemOrbit />
+
+      {/* 3. X-Ray Transform Grid (Friction & Antidote) */}
+      <XRayTransform />
+
+      {/* 4. Course Tracks Matrix */}
+      <BentoGrid />
+
+      {/* 5. Performance Data Matrix (Metrics Section) */}
+      <section className="py-24 bg-white relative z-10">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {METRICS.map((metric, idx) => {
+              const Icon = metric.icon;
+              return (
+                <div key={idx} className="text-center flex flex-col items-center">
+                  <div className="p-3 bg-red-50 text-[#EE1C25] rounded-2xl mb-4 shadow-sm border border-red-100/50">
+                    <Icon className="w-6 h-6" />
+                  </div>
+                  <div className="text-4xl font-extrabold font-heading text-[#171717] mb-1">
+                    {metric.value}
+                  </div>
+                  <div className="text-sm font-semibold text-neutral-400 uppercase tracking-wider">
+                    {metric.label}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      </section>
+
+      {/* 6. Founders & Mentors Carousel */}
+      <MentorCarousel />
+
+      {/* 7. Placement Journey Cards */}
+      <PlacementJourney />
+
+      {/* 8. FAQ Accordion Layer */}
+      <FAQAccordion />
+
+      {/* 9. Minimalist Registration Form */}
+      <RegistrationForm />
+
+      {/* Footer */}
+      <Footer />
+
+      {/* WhatsApp Floating CTA */}
+      <a
+        href="https://wa.me/yournumber"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-8 right-8 w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center text-3xl shadow-2xl hover:scale-110 active:scale-95 hover:rotate-[8deg] transition-all duration-200 z-[1000]"
+        aria-label="Chat on WhatsApp"
+      >
+        <MessageCircle className="w-7 h-7 fill-white stroke-none" />
+      </a>
+    </main>
   );
 }

@@ -1,0 +1,125 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Course {
+  id              String                     @id @default(cuid())
+  slug            String                     @unique
+  title           String
+  category        String
+  description     String?
+  difficulty      String?
+  isActive        Boolean                    @default(true)
+  createdAt       DateTime                   @default(now())
+  updatedAt       DateTime                   @updatedAt
+  recommendations AssessmentRecommendation[]
+}
+
+model AssessmentQuestion {
+  id          String             @id @default(cuid())
+  category    String             // Python, SQL, AI Fundamentals, Machine Learning, Generative AI, Cloud, Data Analytics, Problem Solving
+  difficulty  String             // Beginner, Intermediate, Advanced
+  question    String
+  explanation String?
+  options     AssessmentOption[]
+  createdAt   DateTime           @default(now())
+}
+
+model AssessmentOption {
+  id         String             @id @default(cuid())
+  questionId String
+  question   AssessmentQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  text       String
+  isCorrect  Boolean
+}
+
+model AssessmentLead {
+  id             String              @id @default(cuid())
+  name           String
+  email          String              @unique
+  phone          String
+  college        String
+  degree         String
+  graduationYear String
+  linkedinUrl    String?
+  githubUrl      String?
+  portfolioUrl   String?
+  resumeUrl      String?
+  resumeStatus   String              @default("PENDING") // PENDING, PROCESSING, COMPLETED, FAILED
+  source         String?             // e.g. Homepage CTA, Assessment CTA, LinkedIn, etc.
+  leadScore      Int?                // 0-100 score
+  status         String              @default("NEW") // NEW, CONTACTED, QUALIFIED, ENROLLED, REJECTED
+  updatedBy      String?             // Auditing: who updated status
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+  sessions       AssessmentSession[]
+  emailLogs      AssessmentEmailLog[]
+}
+
+model AssessmentSession {
+  id                  String             @id @default(cuid())
+  leadId              String
+  lead                AssessmentLead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  skillsMatrix        Json?              // e.g. { "python": true, "sql": false }
+  candidateProfile    String?            // Beginner, Intermediate, Advanced
+  interestVector      Json?              // e.g. { "GenAI": 92, "Data Science": 74 }
+  overallReadiness    Float?
+  technicalFoundation Float?
+  problemSolving      Float?
+  industryReadiness   Float?
+  learningVelocity    Float?
+  overallScore        Float?
+  skillGapAnalysis    Json?              // { "currentSkills": [...], "missingSkills": [...] }
+  createdAt           DateTime           @default(now())
+  answers             AssessmentAnswer[]
+  results             AssessmentResult[]
+}
+
+model AssessmentAnswer {
+  id             String            @id @default(cuid())
+  sessionId      String
+  session        AssessmentSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  questionId     String
+  selectedAnswer String
+  score          Int               // e.g., 0 or 10
+  timestamp      DateTime          @default(now())
+}
+
+model AssessmentResult {
+  id                       String                     @id @default(cuid())
+  sessionId                String
+  session                  AssessmentSession          @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  technicalFoundationScore Float
+  aiReadinessScore         Float
+  industryReadinessScore   Float
+  learningVelocityScore    Float
+  overallScore             Float
+  createdAt                DateTime                   @default(now())
+  recommendations          AssessmentRecommendation[]
+}
+
+model AssessmentRecommendation {
+  id              String           @id @default(cuid())
+  resultId        String
+  result          AssessmentResult @relation(fields: [resultId], references: [id], onDelete: Cascade)
+  courseId        String
+  course          Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  confidenceScore Float
+  alignmentScore  Float
+  type            String           // PRIMARY, SECONDARY
+  createdAt       DateTime         @default(now())
+}
+
+model AssessmentEmailLog {
+  id               String         @id @default(cuid())
+  assessmentLeadId String
+  lead             AssessmentLead @relation(fields: [assessmentLeadId], references: [id], onDelete: Cascade)
+  emailType        String         // e.g. ASSESSMENT_COMPLETED
+  status           String         // SENT, FAILED
+  sentAt           DateTime       @default(now())
+  error            String?
+}
