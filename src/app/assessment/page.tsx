@@ -822,11 +822,12 @@ export default function AssessmentPage() {
                 {Object.entries(skillsMatrix).map(([key, val]) => (
                   <div
                     key={key}
-                    className={`p-4 rounded-2xl border transition-all duration-300 flex flex-col items-center text-center justify-center gap-2 ${
-                      val ? 'bg-[#EE1C25]/5 border-[#EE1C25]/30 text-white' : 'bg-neutral-950 border-neutral-800 text-neutral-500'
+                    onClick={() => setSkillsMatrix((prev) => ({ ...prev, [key]: !prev[key] }))}
+                    className={`p-4 rounded-2xl border transition-all duration-300 flex flex-col items-center text-center justify-center gap-2 cursor-pointer select-none ${
+                      val ? 'bg-[#EE1C25]/5 border-[#EE1C25]/40 text-white shadow-lg shadow-red-950/10' : 'bg-neutral-950 border-neutral-800 hover:border-neutral-600 text-neutral-500 hover:text-neutral-300'
                     }`}
                   >
-                    {val ? <CheckCircle2 className="w-5 h-5 text-[#EE1C25]" /> : <div className="w-5 h-5 rounded-full border-2 border-neutral-700" />}
+                    {val ? <CheckCircle2 className="w-5 h-5 text-[#EE1C25]" /> : <div className="w-5 h-5 rounded-full border-2 border-neutral-700 transition-colors" />}
                     <span className="text-xs font-extrabold uppercase tracking-wider">
                       {key.replace(/([A-Z])/g, ' $1')}
                     </span>
